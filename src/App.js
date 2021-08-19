@@ -1,6 +1,6 @@
 import "./App.css";
 import HomePage from "./pages/homepage/homepage.component";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import SingnInAndSignUpPage from "./pages/sign-in -and-sign-up/sign-in -and-sign-up.component";
@@ -50,12 +50,26 @@ class App extends React.Component {
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/shop" component={ShopPage} />
-          <Route path="/signin" component={SingnInAndSignUpPage}></Route>
+          <Route
+            exact
+            path="/signin"
+            render={() =>
+              this.props.currentUser ? (
+                <Redirect to="/" />
+              ) : (
+                <SingnInAndSignUpPage />
+              )
+            }
+          ></Route>
         </Switch>
       </div>
     );
   }
 }
+
+const mapStateToProps = ({ user }) => ({
+  currentUser: user.currentUser,
+});
 //  will dispatch event and upate userreducer  which will update statetoprops in header
 const mapDispatchToProps = (dispatch) => ({
   setCurrentUser: (user) => {
@@ -63,4 +77,4 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(setCurrentUser(user));
   },
 });
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
