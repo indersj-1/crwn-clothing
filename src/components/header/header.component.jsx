@@ -34,8 +34,11 @@ const Header = ({ currentUser, hidden }) => (
 );
 
 // will connect will suit up all component and provide state and action of reduce
-const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => ({
-  currentUser,
-  hidden,
-});
+const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => {
+  console.log("Header mapstate to props called");
+  return {
+    currentUser,
+    hidden,
+  };
+};
 export default connect(mapStateToProps)(Header);
